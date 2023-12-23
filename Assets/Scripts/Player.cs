@@ -3,26 +3,85 @@ using UnityEngine;
 public class Player : MonoBehaviour {
 	[SerializeField] private float MoveSpeed = 5f;
 	[SerializeField] private float RotateSpeed = 10f;
+	[SerializeField] private LayerMask CountersLayerMask;
 
 	private GameInput gameInput;
 
 
 	private bool isWalking;
+	private Vector3 lastInteractDir;
 
 	private void Awake() {
 		gameInput = GetComponent<GameInput>();
 	}
 
+	private void Start() {
+		gameInput.OnInteract += GameInput_OnInteract;
+	}
 	private void Update() {
+		HandleMovement();
+		//HandleInteractions();
+	}
+	private void GameInput_OnInteract(object sender, System.EventArgs e) {
+			HandleInteractions();
+	}
 
+	private void HandleInteractions() {
 		Vector2 inputVector = gameInput.GetMovementVectorNormalized();
 		Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
-		transform.position += moveDir * MoveSpeed * Time.deltaTime;
+
+		if (moveDir != Vector3.zero) {
+			lastInteractDir = moveDir;
+		}
+
+		float interactDistance = 2f;
+		if (Physics.Raycast(transform.position, lastInteractDir, out RaycastHit hit, interactDistance, CountersLayerMask)) {
+			if (hit.transform.TryGetComponent(out ClearCounter clearCounter)) {
+				// Has clear counter
+				clearCounter.Interact();
+			}
+			Debug.Log(hit.collider.gameObject.name);
+		}
+		
+	}
+	private void HandleMovement() {
+		Vector2 inputVector = gameInput.GetMovementVectorNormalized();
+		Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
+
+		float moveDistance = MoveSpeed * Time.deltaTime;
+		float playerRadius = 0.7f;
+		float playerHeight = 2f;
+		bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDir, moveDistance);
+
+		if (!canMove) {
+			// Can't move
+			// Attempt to slide along the wall, x movement first
+			Vector3 slideDir = new Vector3(moveDir.x, 0f, 0f).normalized;
+			canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, slideDir, moveDistance);
+
+			if (canMove) {
+				moveDir = slideDir;
+			} else {
+				// cannot move on the x
+
+				// attempt to slide along the wall, Z movement
+				slideDir = new Vector3(0f, 0f, moveDir.z).normalized;
+				canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, slideDir, moveDistance);
+
+				if (canMove) {
+					moveDir = slideDir;
+				} else {
+					// cannot move in any direction
+				}
+			}
+		}
+		if (canMove) {
+			transform.position += moveDir * MoveSpeed * Time.deltaTime;
+		}
 
 		isWalking = inputVector != Vector2.zero;
-		transform.forward = Vector3.Slerp(transform.forward, moveDir, RotateSpeed * Time.deltaTime);
 
-		Debug.Log(inputVector);
+		transform.forward = Vector3.Slerp(transform.forward, moveDir, RotateSpeed * Time.deltaTime);
 	}
 
 	public bool IsWalking() {
