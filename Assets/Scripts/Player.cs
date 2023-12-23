@@ -1,6 +1,14 @@
+using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
+	public static Player Instance { get; private set; }
+	
+	public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
+	public class OnSelectedCounterChangedEventArgs : EventArgs {
+		public ClearCounter selectedCounter;
+	}
+
 	[SerializeField] private float MoveSpeed = 5f;
 	[SerializeField] private float RotateSpeed = 10f;
 	[SerializeField] private LayerMask CountersLayerMask;
@@ -10,9 +18,14 @@ public class Player : MonoBehaviour {
 
 	private bool isWalking;
 	private Vector3 lastInteractDir;
+	private ClearCounter selectedCounter;
 
 	private void Awake() {
 		gameInput = GetComponent<GameInput>();
+
+		if (Instance != null) {
+			Debug.LogError("There is more than one player instance");
+		} else Instance = this;
 	}
 
 	private void Start() {
@@ -20,10 +33,13 @@ public class Player : MonoBehaviour {
 	}
 	private void Update() {
 		HandleMovement();
-		//HandleInteractions();
+		HandleInteractions();
 	}
 	private void GameInput_OnInteract(object sender, System.EventArgs e) {
-			HandleInteractions();
+		if (selectedCounter != null) {
+			selectedCounter.Interact();
+			Debug.Log("Interact with counter");
+		}
 	}
 
 	private void HandleInteractions() {
@@ -38,11 +54,16 @@ public class Player : MonoBehaviour {
 		if (Physics.Raycast(transform.position, lastInteractDir, out RaycastHit hit, interactDistance, CountersLayerMask)) {
 			if (hit.transform.TryGetComponent(out ClearCounter clearCounter)) {
 				// Has clear counter
-				clearCounter.Interact();
+				if (clearCounter != selectedCounter) {
+					SetSelectedCounter(clearCounter);
+				}
+			} else {
+				SetSelectedCounter(null);
 			}
-			Debug.Log(hit.collider.gameObject.name);
+		} else {
+			SetSelectedCounter(null);
 		}
-		
+
 	}
 	private void HandleMovement() {
 		Vector2 inputVector = gameInput.GetMovementVectorNormalized();
@@ -86,5 +107,10 @@ public class Player : MonoBehaviour {
 
 	public bool IsWalking() {
 		return isWalking;
+	}
+
+	private void SetSelectedCounter(ClearCounter newCounter) {
+		selectedCounter = newCounter;
+		OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs { selectedCounter = selectedCounter });
 	}
 }
