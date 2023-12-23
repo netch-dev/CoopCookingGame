@@ -1,39 +1,31 @@
 using UnityEngine;
 
 public class Player : MonoBehaviour {
-    [SerializeField] private float MoveSpeed = 5f;
-    [SerializeField] private float RotateSpeed = 10f;
+	[SerializeField] private float MoveSpeed = 5f;
+	[SerializeField] private float RotateSpeed = 10f;
 
-    private bool isWalking;
+	private GameInput gameInput;
 
-    private void Update() {
-        Vector3 inputVector = new Vector2(0, 0);
 
-        if (Input.GetKey(KeyCode.W)) {
-            inputVector.y += 1;
-        }
-        if (Input.GetKey(KeyCode.S)) {
-            inputVector.y -= 1;
-        }
-        if (Input.GetKey(KeyCode.A)) {
-            inputVector.x -= 1;
-        }
-        if (Input.GetKey(KeyCode.D)) {
-            inputVector.x += 1;
-        }
+	private bool isWalking;
 
-        inputVector.Normalize();
+	private void Awake() {
+		gameInput = GetComponent<GameInput>();
+	}
 
-        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
-        transform.position += moveDir * MoveSpeed * Time.deltaTime;
+	private void Update() {
 
-        isWalking = inputVector != Vector3.zero;
-        transform.forward = Vector3.Slerp(transform.forward, moveDir, RotateSpeed * Time.deltaTime);
+		Vector2 inputVector = gameInput.GetMovementVectorNormalized();
+		Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
+		transform.position += moveDir * MoveSpeed * Time.deltaTime;
 
-        Debug.Log(inputVector);
-    }
+		isWalking = inputVector != Vector2.zero;
+		transform.forward = Vector3.Slerp(transform.forward, moveDir, RotateSpeed * Time.deltaTime);
 
-    public bool IsWalking() {
-        return isWalking;
-    }
+		Debug.Log(inputVector);
+	}
+
+	public bool IsWalking() {
+		return isWalking;
+	}
 }
