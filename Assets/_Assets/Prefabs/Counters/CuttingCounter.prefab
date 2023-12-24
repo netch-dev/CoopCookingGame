@@ -104,6 +104,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   counterTopPoint: {fileID: 7569930437985964404}
+  cuttingRecipeSOArray:
+  - {fileID: 11400000, guid: a37c8d6cf0d593c44867f8e898da6789, type: 2}
+  - {fileID: 11400000, guid: 896b5df7fb4cdc84088e89fc4c8061e6, type: 2}
+  - {fileID: 11400000, guid: 1d19f16288be9894b96d88f243be1436, type: 2}
 --- !u!1 &7569930437985964404 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5066703408009544657, guid: 43d82130dfa4f5d43ae4a0ea35284647,
