@@ -8,7 +8,8 @@ public class ContainerCounter : BaseCounter {
 
 	
 	public override void Interact(Player player) {
-		if (!HasKitchenObject()) {
+		if (!player.HasKitchenObject()) {
+			// player is not carrying anything
 			GameObject newKitchenObject = Instantiate(kitchObjectSO.prefab);
 			newKitchenObject.GetComponent<KitchenObject>().SetKitchenObjectParent(player);
 
