@@ -93,6 +93,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8489276541531669327, guid: 0004cb1e11ad014419b943c7da960724,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -329,5 +334,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03ee2ec2ac0b60545bab076bd6d6894f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  kitchObjectSO: {fileID: 11400000, guid: 3a6a13dd2db89e847a89e0e488109522, type: 2}
   counterTopPoint: {fileID: 251009084330275285}
+  kitchObjectSO: {fileID: 11400000, guid: 3a6a13dd2db89e847a89e0e488109522, type: 2}
