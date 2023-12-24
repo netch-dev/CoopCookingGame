@@ -33,10 +33,20 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
 
 	private void Start() {
 		gameInput.OnInteract += GameInput_OnInteract;
+		gameInput.OnInteractAlternate += GameInput_OnInteractAlternate;
 	}
+
+	
+
 	private void Update() {
 		HandleMovement();
 		HandleInteractions();
+	}
+
+	private void GameInput_OnInteractAlternate(object sender, EventArgs e) {
+		if (selectedCounter != null) {
+			selectedCounter.InteractAlternate(this);
+		}
 	}
 	private void GameInput_OnInteract(object sender, System.EventArgs e) {
 		if (selectedCounter != null) {
@@ -80,7 +90,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
 			// Can't move
 			// Attempt to slide along the wall, x movement first
 			Vector3 slideDir = new Vector3(moveDir.x, 0f, 0f).normalized;
-			canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, slideDir, moveDistance);
+			canMove = moveDir.x != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, slideDir, moveDistance);
 
 			if (canMove) {
 				moveDir = slideDir;
@@ -89,7 +99,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
 
 				// attempt to slide along the wall, Z movement
 				slideDir = new Vector3(0f, 0f, moveDir.z).normalized;
-				canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, slideDir, moveDistance);
+				canMove = moveDir.z != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, slideDir, moveDistance);
 
 				if (canMove) {
 					moveDir = slideDir;
