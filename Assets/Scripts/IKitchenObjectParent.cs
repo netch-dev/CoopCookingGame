@@ -1,10 +1,12 @@
 using UnityEngine;
 
 public interface IKitchenObjectParent {
-	public Transform GetKitchObjectFollowTransform();
+	
 	public void SetKitchenObject(KitchenObject kitchenObject);
 
 	public KitchenObject GetKitchenObject();
+	
+	public Transform GetKitchObjectFollowTransform();
 
 	public void ClearKitchenObject();
 
