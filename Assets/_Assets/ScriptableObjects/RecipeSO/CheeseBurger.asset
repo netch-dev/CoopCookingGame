@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CheeseBurger
   m_EditorClassIdentifier: 
   kitchenObjectSOList:
-  - {fileID: 11400000, guid: 1b940eeae2b746345a4036d13853f3b2, type: 2}
   - {fileID: 11400000, guid: 7a21eec60af098c4fa1caf9879094959, type: 2}
+  - {fileID: 11400000, guid: 1b940eeae2b746345a4036d13853f3b2, type: 2}
   - {fileID: 11400000, guid: 5a6b6fd1602ae724eb0d6caf87b127d4, type: 2}
   recipeName: Cheese Burger

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Burger
   m_EditorClassIdentifier: 
   kitchenObjectSOList:
-  - {fileID: 11400000, guid: 1b940eeae2b746345a4036d13853f3b2, type: 2}
   - {fileID: 11400000, guid: 7a21eec60af098c4fa1caf9879094959, type: 2}
+  - {fileID: 11400000, guid: 1b940eeae2b746345a4036d13853f3b2, type: 2}
   recipeName: Burger
