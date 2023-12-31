@@ -13,5 +13,8 @@ public class MainMenuUI : MonoBehaviour
 		quitButton.onClick.AddListener(() => {
 			Application.Quit();
 		});
+
+		// Reset the time scale in case the player quit the game while it was paused
+		Time.timeScale = 1f;
 	}
 }
