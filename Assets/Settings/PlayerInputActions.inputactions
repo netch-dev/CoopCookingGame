@@ -31,6 +31,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "3dec80f8-e2f6-4c58-b931-f9af0cddc59f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -176,32 +185,15 @@
                     "action": "InteractAlternate",
                     "isComposite": false,
                     "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Vehicle",
-            "id": "07f5aea0-5d77-4df4-ae28-f5becb7266fa",
-            "actions": [
-                {
-                    "name": "New action",
-                    "type": "Button",
-                    "id": "3c17cf2b-7dc6-4acd-9274-e7f13e2927c2",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
+                },
                 {
                     "name": "",
-                    "id": "4d65a42b-aaf6-4b92-b596-dc13f9aa5a00",
-                    "path": "",
+                    "id": "6714edac-d2e1-4c97-94b6-e0735f474b8f",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

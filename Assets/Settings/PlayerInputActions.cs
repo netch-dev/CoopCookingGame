@@ -53,6 +53,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""3dec80f8-e2f6-4c58-b931-f9af0cddc59f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -198,32 +207,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""InteractAlternate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""Vehicle"",
-            ""id"": ""07f5aea0-5d77-4df4-ae28-f5becb7266fa"",
-            ""actions"": [
-                {
-                    ""name"": ""New action"",
-                    ""type"": ""Button"",
-                    ""id"": ""3c17cf2b-7dc6-4acd-9274-e7f13e2927c2"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
+                },
                 {
                     ""name"": """",
-                    ""id"": ""4d65a42b-aaf6-4b92-b596-dc13f9aa5a00"",
-                    ""path"": """",
+                    ""id"": ""6714edac-d2e1-4c97-94b6-e0735f474b8f"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -237,9 +229,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_InteractAlternate = m_Player.FindAction("InteractAlternate", throwIfNotFound: true);
-        // Vehicle
-        m_Vehicle = asset.FindActionMap("Vehicle", throwIfNotFound: true);
-        m_Vehicle_Newaction = m_Vehicle.FindAction("New action", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -304,6 +294,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_InteractAlternate;
+    private readonly InputAction m_Player_Pause;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -311,6 +302,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @InteractAlternate => m_Wrapper.m_Player_InteractAlternate;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -329,6 +321,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @InteractAlternate.started += instance.OnInteractAlternate;
             @InteractAlternate.performed += instance.OnInteractAlternate;
             @InteractAlternate.canceled += instance.OnInteractAlternate;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -342,6 +337,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @InteractAlternate.started -= instance.OnInteractAlternate;
             @InteractAlternate.performed -= instance.OnInteractAlternate;
             @InteractAlternate.canceled -= instance.OnInteractAlternate;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -359,60 +357,11 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
-
-    // Vehicle
-    private readonly InputActionMap m_Vehicle;
-    private List<IVehicleActions> m_VehicleActionsCallbackInterfaces = new List<IVehicleActions>();
-    private readonly InputAction m_Vehicle_Newaction;
-    public struct VehicleActions
-    {
-        private @PlayerInputActions m_Wrapper;
-        public VehicleActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Newaction => m_Wrapper.m_Vehicle_Newaction;
-        public InputActionMap Get() { return m_Wrapper.m_Vehicle; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(VehicleActions set) { return set.Get(); }
-        public void AddCallbacks(IVehicleActions instance)
-        {
-            if (instance == null || m_Wrapper.m_VehicleActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_VehicleActionsCallbackInterfaces.Add(instance);
-            @Newaction.started += instance.OnNewaction;
-            @Newaction.performed += instance.OnNewaction;
-            @Newaction.canceled += instance.OnNewaction;
-        }
-
-        private void UnregisterCallbacks(IVehicleActions instance)
-        {
-            @Newaction.started -= instance.OnNewaction;
-            @Newaction.performed -= instance.OnNewaction;
-            @Newaction.canceled -= instance.OnNewaction;
-        }
-
-        public void RemoveCallbacks(IVehicleActions instance)
-        {
-            if (m_Wrapper.m_VehicleActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
-
-        public void SetCallbacks(IVehicleActions instance)
-        {
-            foreach (var item in m_Wrapper.m_VehicleActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_VehicleActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
-        }
-    }
-    public VehicleActions @Vehicle => new VehicleActions(this);
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnInteractAlternate(InputAction.CallbackContext context);
-    }
-    public interface IVehicleActions
-    {
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }
