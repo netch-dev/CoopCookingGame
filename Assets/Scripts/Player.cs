@@ -95,7 +95,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent {
 			// Can't move
 			// Attempt to slide along the wall, x movement first
 			Vector3 slideDir = new Vector3(moveDir.x, 0f, 0f).normalized;
-			canMove = moveDir.x != 0 && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, slideDir, moveDistance);
+			canMove = (moveDir.x < -0.5f || moveDir.x > +0.5f) && !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, slideDir, moveDistance);
 
 			if (canMove) {
 				moveDir = slideDir;
