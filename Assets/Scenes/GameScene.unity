@@ -4527,7 +4527,7 @@ GameObject:
   - component: {fileID: 554911526}
   - component: {fileID: 554911525}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Boundary
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5509,6 +5509,8 @@ GameObject:
   m_Component:
   - component: {fileID: 648151493}
   - component: {fileID: 648151494}
+  - component: {fileID: 648151496}
+  - component: {fileID: 648151495}
   m_Layer: 5
   m_Name: GameStartCountdownUI
   m_TagString: Untagged
@@ -5550,6 +5552,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countdownText: {fileID: 969937829}
+--- !u!225 &648151495
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648151492}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!95 &648151496
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648151492}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 97f9d102347249748b0d188d5445ca87, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &668759363
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8695,7 +8730,7 @@ GameObject:
   - component: {fileID: 1076365342}
   - component: {fileID: 1076365341}
   m_Layer: 0
-  m_Name: Cube (2)
+  m_Name: Boundary
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10338,7 +10373,7 @@ GameObject:
   - component: {fileID: 1304680366}
   - component: {fileID: 1304680365}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: Boundary
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
